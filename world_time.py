@@ -73,9 +73,7 @@ def get_time():
     backup_country[1] = gettime_zone
     current_time_in = timeIn.strftime("%I:%M %p")
     check_error(1)
-    errorLable.pack_forget()
-    emptyframe.pack(before=input_entry)
-    errorLable.config(state='noerror')
+
     #print(backup_country[1])
     output_ctime()
 
@@ -107,32 +105,31 @@ def default_time():
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
-def check_location():
-    checkklocal = list(all_zone.items())
-# check error
-def check_error(val: bool):
-    getstate = errorLable.cget('state')
-    if not entry_str.get() and not val:
-    # setup error frame
-        print('1')
-        print(bool(entry_str.get()))
-        print(getstate)
-        print(bool(val))
-        emptyframe.pack_forget()
-        errorLable.config(state='error')
-        errorLable.pack(before=input_entry)
-        entry_str.set('')
-    elif entry_str.get() and not val:
-        strinput = country_title_c()
-        if strinput in all_zone:
-            print(strinput)
-            print('ok')
-        else:
-            print('error')
+def setup_error_frame(type: str):
+    if type == 'error':
             emptyframe.pack_forget()
             errorLable.config(state='error')
             errorLable.pack(before=input_entry)
             entry_str.set('')
+    elif type == 'ok':
+            errorLable.pack_forget()
+            emptyframe.pack(before=input_entry)
+            errorLable.config(state='noerror')
+
+# check error
+def check_error(val: bool):
+    #getstate = errorLable.cget('state')
+    if not entry_str.get() and not val:
+            setup_error_frame('error')
+    elif entry_str.get() and not val:
+        strinput = country_title_c()
+        if strinput in all_zone:
+        #   print(strinput)
+            setup_error_frame('ok')
+            print('ok')
+        else:
+        #   print('error')
+            setup_error_frame('error')
 
 # get backgroud image
 def get_styleimg(img: str, wdth: int, hght: int):
