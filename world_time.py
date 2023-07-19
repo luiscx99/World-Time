@@ -57,13 +57,17 @@ pytime = pytz.timezone
 pydatetime = datetime.now
 backup_country = {}
 
+def country_title_c():
+    inputstr = entry_str.get()
+    strinput = inputstr.title()
+    return strinput
 
 # Get Time
 def get_time():
     global country_tz, current_time_in, TXT_T
     #print(gettime_zone)
     check_error(0)
-    gettime_zone = all_zone[entry_str.get()]
+    gettime_zone = all_zone[country_title_c()]
     country_tz = pytime(gettime_zone)
     timeIn = pydatetime(country_tz)
     backup_country[1] = gettime_zone
@@ -77,7 +81,7 @@ def get_time():
 
 # set country time 
 def output_ctime():
-    output_str.set(entry_str.get())
+    output_str.set(country_title_c())
     output_txt.set(TXT_T)
     output_timestr.set(current_time_in)
     entry_str.set('')
@@ -119,18 +123,16 @@ def check_error(val: bool):
         errorLable.pack(before=input_entry)
         entry_str.set('')
     elif entry_str.get() and not val:
-        if entry_str.get() in all_zone:
+        strinput = country_title_c()
+        if strinput in all_zone:
+            print(strinput)
             print('ok')
         else:
             print('error')
-       # errorLable.config(state='error')
-#        errorLable.pack(before=input_entry)
-#        entry_str.set('')
-
-
-       # if entry_str.get() or getstate == 'error' and val:
-#            print(bool(entry_str.get()))
-#            print(getstate)
+            emptyframe.pack_forget()
+            errorLable.config(state='error')
+            errorLable.pack(before=input_entry)
+            entry_str.set('')
 
 # get backgroud image
 def get_styleimg(img: str, wdth: int, hght: int):
