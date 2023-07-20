@@ -24,7 +24,7 @@ class App(ttk.Window):
         # output local
         self.outputlocal = Local_time(self, 'The local time is:', 'Calibri 9 bold', 'Calibri 10 bold')
         # output txt
-        self.outputalltext = Output_txtframe(self, 'info', 'inverse-info', 'Calibri 11 bold', 'Calibri 13 bold', '#258fac')
+        self.outputalltext = Output_txtframe(self, 'info', 'inverse-info', 'Calibri 11 bold', 'Calibri 15 bold', '#258fac')
         # time frame
         #image = Image.open("background.jpg")
         #global width, height
@@ -49,7 +49,7 @@ all_zone = {'Abidjan': 'Africa/Abidjan', 'Accra': 'Africa/Accra', 'Addis Ababa':
 'Australia/Broken_Hill', 'Australia Canberra': 'Australia/Canberra', 'Australia Currie': 'Australia/Currie', 'Australia Darwin': 'Australia/Darwin', 'Australia Eucla': 'Australia/Eucla', 'Australia Hobart': 'Australia/Hobart', 'Australia LHI': 'Australia/LHI', 'Australia Lindeman': 'Australia/Lindeman', 'Australia Lord Howe': 'Australia/Lord_Howe', 'Australia Melbourne': 'Australia/Melbourne', 'Australia NSW': 'Australia/NSW', 'Australia North': 'Australia/North', 'Australia Perth': 'Australia/Perth', 'Australia Queensland': 'Australia/Queensland', 'Australia South': 'Australia/South', 'Sydney': 'Australia/Sydney', 'Australia Tasmania': 'Australia/Tasmania', 'Australia Victoria': 'Australia/Victoria', 'Australia West': 'Australia/West', 'Australia Yancowinna': 'Australia/Yancowinna', 'Brazil Acre': 'Brazil/Acre', 'Brazil DeNoronha': 'Brazil/DeNoronha', 'Brazil East': 'Brazil/East', 'Brazil West': 'Brazil/West', 'CET': 'CET', 'CST6CDT': 'CST6CDT', 'Canada Atlantic': 'Canada/Atlantic', 'Canada Central': 'Canada/Central', 'Canada Eastern': 'Canada/Eastern', 'Canada Mountain': 'Canada/Mountain', 'Canada Newfoundland': 'Canada/Newfoundland', 'Canada Pacific': 'Canada/Pacific', 'Canada Saskatchewan': 'Canada/Saskatchewan', 'Canada Yukon': 'Canada/Yukon', 'Chile Continental': 'Chile/Continental', 'Chile EasterIsland': 'Chile/EasterIsland', 'Cuba': 'Cuba', 'EET': 'EET', 'EST': 'EST', 'EST5EDT': 'EST5EDT', 'Egypt': 'Egypt', 'Eire': 'Eire', 'Etc GMT': 'Etc/GMT', 'Etc GMT+0': 'Etc/GMT+0', 'Etc GMT+1': 'Etc/GMT+1', 
 'Etc GMT+10': 'Etc/GMT+10', 'Etc GMT+11': 'Etc/GMT+11', 'Etc GMT+12': 'Etc/GMT+12', 'Etc GMT+2': 'Etc/GMT+2', 'Etc GMT+3': 'Etc/GMT+3', 'Etc GMT+4': 'Etc/GMT+4', 'Etc GMT+5': 'Etc/GMT+5', 'Etc GMT+6': 'Etc/GMT+6', 'Etc GMT+7': 'Etc/GMT+7', 'Etc GMT+8': 'Etc/GMT+8', 'Etc GMT+9': 'Etc/GMT+9', 'Etc GMT-0': 'Etc/GMT-0', 'Etc GMT-1': 'Etc/GMT-1', 'Etc GMT-10': 'Etc/GMT-10', 'Etc GMT-11': 'Etc/GMT-11', 'Etc GMT-12': 'Etc/GMT-12', 'Etc GMT-13': 'Etc/GMT-13', 'Etc GMT-14': 'Etc/GMT-14', 'Etc GMT-2': 'Etc/GMT-2', 'Etc GMT-3': 'Etc/GMT-3', 'Etc GMT-4': 'Etc/GMT-4', 'Etc GMT-5': 'Etc/GMT-5', 'Etc GMT-6': 'Etc/GMT-6', 'Etc GMT-7': 'Etc/GMT-7', 'Etc GMT-8': 'Etc/GMT-8', 'Etc GMT-9': 'Etc/GMT-9', 'Etc GMT0': 'Etc/GMT0', 'Etc Greenwich': 'Etc/Greenwich', 'Etc UCT': 'Etc/UCT', 'Etc UTC': 'Etc/UTC', 'Etc Universal': 'Etc/Universal', 'Etc Zulu': 'Etc/Zulu', 'Amsterdam': 'Europe/Amsterdam', 'Andorra': 'Europe/Andorra', 'Astrakhan': 'Europe/Astrakhan', 'Athens': 'Europe/Athens', 'Belfast': 'Europe/Belfast', 'Belgrade': 'Europe/Belgrade', 'Berlin': 'Europe/Berlin', 'Bratislava': 'Europe/Bratislava', 'Brussels': 'Europe/Brussels', 'Bucharest': 'Europe/Bucharest', 'Budapest': 'Europe/Budapest', 'Busingen': 'Europe/Busingen', 'Chisinau': 'Europe/Chisinau', 'Copenhagen': 'Europe/Copenhagen', 'Dublin': 'Europe/Dublin', 'Gibraltar': 'Europe/Gibraltar', 'Guernsey': 'Europe/Guernsey', 'Helsinki': 'Europe/Helsinki', 'Isle of Man': 'Europe/Isle_of_Man', 'Jersey': 'Europe/Jersey', 'Kaliningrad': 'Europe/Kaliningrad', 'Kiev': 'Europe/Kiev', 'Kirov': 'Europe/Kirov', 'Kyiv': 'Europe/Kyiv', 'Lisbon': 'Europe/Lisbon', 'Ljubljana': 'Europe/Ljubljana', 'London': 'Europe/London', 'Luxembourg': 'Europe/Luxembourg', 'Madrid': 'Europe/Madrid', 'Malta': 'Europe/Malta', 'Mariehamn': 'Europe/Mariehamn', 'Minsk': 'Europe/Minsk', 'Monaco': 'Europe/Monaco', 'Moscow': 'Europe/Moscow', 'Oslo': 'Europe/Oslo', 'Paris': 'Europe/Paris', 'Podgorica': 'Europe/Podgorica', 'Prague': 'Europe/Prague', 'Riga': 'Europe/Riga', 'Rome': 'Europe/Rome', 'Samara': 'Europe/Samara', 'San Marino': 'Europe/San_Marino', 'Sarajevo': 'Europe/Sarajevo', 'Saratov': 'Europe/Saratov', 'Simferopol': 'Europe/Simferopol', 'Skopje': 'Europe/Skopje', 'Sofia': 'Europe/Sofia', 'Stockholm': 'Europe/Stockholm', 'Tallinn': 'Europe/Tallinn', 'Tirane': 'Europe/Tirane', 'Tiraspol': 'Europe/Tiraspol', 'Ulyanovsk': 'Europe/Ulyanovsk', 'Uzhgorod': 'Europe/Uzhgorod', 'Vaduz': 'Europe/Vaduz', 'Vatican': 'Europe/Vatican', 'Vienna': 'Europe/Vienna', 'Vilnius': 'Europe/Vilnius', 'Volgograd': 'Europe/Volgograd', 'Warsaw': 'Europe/Warsaw', 'Zagreb': 'Europe/Zagreb', 'Zaporozhye': 'Europe/Zaporozhye', 'Zurich': 'Europe/Zurich', 'GB': 'GB', 'GB-Eire': 'GB-Eire', 'GMT': 'GMT', 'GMT+0': 'GMT+0', 'GMT-0': 'GMT-0', 'GMT0': 'GMT0', 'Greenwich': 'Greenwich', 'HST': 'HST', 'Hongkong': 'Hongkong', 'Iceland': 'Iceland', 'Antananarivo': 'Indian/Antananarivo', 'Chagos': 'Indian/Chagos', 'Christmas': 'Indian/Christmas', 'Cocos': 'Indian/Cocos', 'Comoro': 'Indian/Comoro', 'Kerguelen': 'Indian/Kerguelen', 'Mahe': 'Indian/Mahe', 'Maldives': 'Indian/Maldives', 'Mauritius': 'Indian/Mauritius', 'Mayotte': 'Indian/Mayotte', 'Reunion': 'Indian/Reunion', 'Iran': 
 'Iran', 'Israel': 'Israel', 'Japan': 'Japan', 'Kwajalein': 'Kwajalein', 'Libya': 'Libya', 'MET': 'MET', 'MST': 'MST', 'MST7MDT': 'MST7MDT', 'Mexico BajaNorte': 'Mexico/BajaNorte', 'Mexico BajaSur': 'Mexico/BajaSur', 'Mexico': 'Mexico/General', 'NZ': 'NZ', 'NZ-CHAT': 'NZ-CHAT', 
-'Navajo': 'Navajo', 'PRC': 'PRC', 'PST8PDT': 'PST8PDT', 'Pacific Apia': 'Pacific/Apia', 'Pacific Auckland': 'Pacific/Auckland', 'Pacific Bougainville': 'Pacific/Bougainville', 'Pacific Chatham': 'Pacific/Chatham', 'Pacific Chuuk': 'Pacific/Chuuk', 'Pacific Easter': 'Pacific/Easter', 'Pacific Efate': 'Pacific/Efate', 'Pacific Enderbury': 'Pacific/Enderbury', 'Pacific Fakaofo': 'Pacific/Fakaofo', 'Pacific Fiji': 'Pacific/Fiji', 'Pacific Funafuti': 'Pacific/Funafuti', 'Pacific Galapagos': 'Pacific/Galapagos', 'Pacific Gambier': 'Pacific/Gambier', 'Pacific Guadalcanal': 'Pacific/Guadalcanal', 'Pacific Guam': 'Pacific/Guam', 'Pacific Honolulu': 'Pacific/Honolulu', 'Pacific Johnston': 'Pacific/Johnston', 'Pacific Kanton': 'Pacific/Kanton', 'Pacific Kiritimati': 'Pacific/Kiritimati', 'Pacific Kosrae': 'Pacific/Kosrae', 'Pacific Kwajalein': 'Pacific/Kwajalein', 'Pacific Majuro': 'Pacific/Majuro', 'Pacific Marquesas': 'Pacific/Marquesas', 'Pacific Midway': 'Pacific/Midway', 'Pacific Nauru': 'Pacific/Nauru', 'Pacific Niue': 'Pacific/Niue', 'Pacific Norfolk': 'Pacific/Norfolk', 'Pacific Noumea': 'Pacific/Noumea', 'Pacific Pago Pago': 'Pacific/Pago_Pago', 'Pacific Palau': 'Pacific/Palau', 'Pacific Pitcairn': 'Pacific/Pitcairn', 'Pacific Pohnpei': 'Pacific/Pohnpei', 'Pacific Ponape': 'Pacific/Ponape', 'Pacific Port Moresby': 'Pacific/Port_Moresby', 'Pacific Rarotonga': 'Pacific/Rarotonga', 'Pacific Saipan': 'Pacific/Saipan', 'Pacific Samoa': 'Pacific/Samoa', 'Pacific Tahiti': 'Pacific/Tahiti', 'Pacific Tarawa': 'Pacific/Tarawa', 'Pacific Tongatapu': 'Pacific/Tongatapu', 'Pacific Truk': 'Pacific/Truk', 'Pacific Wake': 'Pacific/Wake', 'Pacific Wallis': 'Pacific/Wallis', 'Pacific Yap': 'Pacific/Yap', 'Poland': 'Poland', 'Portugal': 'Portugal', 'ROC': 'ROC', 'ROK': 'ROK', 'Turkey': 'Turkey', 'UCT': 'UCT', 'US Alaska': 'US/Alaska', 'US Aleutian': 'US/Aleutian', 'US Arizona': 'US/Arizona', 'US Central': 'US/Central', 'US East-Indiana': 'US/East-Indiana', 'US Eastern': 'US/Eastern', 'US Hawaii': 'US/Hawaii', 'US Indiana-Starke': 'US/Indiana-Starke', 'US Michigan': 'US/Michigan', 'US Mountain': 'US/Mountain', 'US Pacific': 'US/Pacific', 'US Samoa': 'US/Samoa', 'UTC': 'UTC', 'Universal': 'Universal', 'W-SU': 'W-SU', 'WET': 'WET', 'Zulu': 'Zulu'}
+'Navajo': 'Navajo', 'PRC': 'PRC', 'PST8PDT': 'PST8PDT', 'Pacific Apia': 'Pacific/Apia', 'Pacific Auckland': 'Pacific/Auckland', 'Pacific Bougainville': 'Pacific/Bougainville', 'Pacific Chatham': 'Pacific/Chatham', 'Pacific Chuuk': 'Pacific/Chuuk', 'Pacific Easter': 'Pacific/Easter', 'Pacific Efate': 'Pacific/Efate', 'Pacific Enderbury': 'Pacific/Enderbury', 'Pacific Fakaofo': 'Pacific/Fakaofo', 'Pacific Fiji': 'Pacific/Fiji', 'Pacific Funafuti': 'Pacific/Funafuti', 'Pacific Galapagos': 'Pacific/Galapagos', 'Pacific Gambier': 'Pacific/Gambier', 'Pacific Guadalcanal': 'Pacific/Guadalcanal', 'Pacific Guam': 'Pacific/Guam', 'Pacific Honolulu': 'Pacific/Honolulu', 'Pacific Johnston': 'Pacific/Johnston', 'Pacific Kanton': 'Pacific/Kanton', 'Pacific Kiritimati': 'Pacific/Kiritimati', 'Pacific Kosrae': 'Pacific/Kosrae', 'Pacific Kwajalein': 'Pacific/Kwajalein', 'Pacific Majuro': 'Pacific/Majuro', 'Pacific Marquesas': 'Pacific/Marquesas', 'Pacific Midway': 'Pacific/Midway', 'Pacific Nauru': 'Pacific/Nauru', 'Pacific Niue': 'Pacific/Niue', 'Pacific Norfolk': 'Pacific/Norfolk', 'Pacific Noumea': 'Pacific/Noumea', 'Pacific Pago Pago': 'Pacific/Pago_Pago', 'Pacific Palau': 'Pacific/Palau', 'Pacific Pitcairn': 'Pacific/Pitcairn', 'Pacific Pohnpei': 'Pacific/Pohnpei', 'Pacific Ponape': 'Pacific/Ponape', 'Pacific Port Moresby': 'Pacific/Port_Moresby', 'Pacific Rarotonga': 'Pacific/Rarotonga', 'Pacific Saipan': 'Pacific/Saipan', 'Pacific Samoa': 'Pacific/Samoa', 'Pacific Tahiti': 'Pacific/Tahiti', 'Pacific Tarawa': 'Pacific/Tarawa', 'Pacific Tongatapu': 'Pacific/Tongatapu', 'Pacific Truk': 'Pacific/Truk', 'Pacific Wake': 'Pacific/Wake', 'Pacific Wallis': 'Pacific/Wallis', 'Pacific Yap': 'Pacific/Yap', 'Poland': 'Poland', 'Portugal': 'Portugal', 'ROC': 'ROC', 'ROK': 'ROK', 'Turkey': 'Turkey', 'UCT': 'UCT', 'Alaska': 'US/Alaska', 'US Aleutian': 'US/Aleutian', 'US Arizona': 'US/Arizona', 'US Central': 'US/Central', 'US East-Indiana': 'US/East-Indiana', 'US Eastern': 'US/Eastern', 'Hawaii': 'US/Hawaii', 'Indiana-Starke': 'US/Indiana-Starke', 'Michigan': 'US/Michigan', 'US Mountain': 'US/Mountain', 'US Pacific': 'US/Pacific', 'Samoa': 'US/Samoa', 'UTC': 'UTC', 'Universal': 'Universal', 'W-SU': 'W-SU', 'WET': 'WET', 'Zulu': 'Zulu'}
 
 
 TXT_T = 'This is the current time in:'
@@ -57,15 +57,18 @@ pytime = pytz.timezone
 pydatetime = datetime.now
 backup_country = {}
 
+# fix country input to title case
 def country_title_c():
     inputstr = entry_str.get()
-    strinput = inputstr.title()
+    if inputstr in all_zone:
+        strinput = inputstr
+    else:
+        strinput = inputstr.title()
     return strinput
 
-# Get Time
+# Get country time
 def get_time():
     global country_tz, current_time_in, TXT_T
-    #print(gettime_zone)
     check_error(0)
     gettime_zone = all_zone[country_title_c()]
     country_tz = pytime(gettime_zone)
@@ -74,7 +77,6 @@ def get_time():
     current_time_in = timeIn.strftime("%I:%M %p")
     check_error(1)
 
-    #print(backup_country[1])
     output_ctime()
 
 # set country time 
@@ -105,30 +107,27 @@ def default_time():
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
-def setup_error_frame(type: str):
-    if type == 'error':
+def setup_error_frame(error: str):
+    if error == 'error':
             emptyframe.pack_forget()
             errorLable.config(state='error')
             errorLable.pack(before=input_entry)
             entry_str.set('')
-    elif type == 'ok':
+    elif error == 'ok':
             errorLable.pack_forget()
             emptyframe.pack(before=input_entry)
             errorLable.config(state='noerror')
+            
 
-# check error
+# check for empty or wrong country
 def check_error(val: bool):
-    #getstate = errorLable.cget('state')
     if not entry_str.get() and not val:
             setup_error_frame('error')
     elif entry_str.get() and not val:
         strinput = country_title_c()
         if strinput in all_zone:
-        #   print(strinput)
             setup_error_frame('ok')
-            print('ok')
         else:
-        #   print('error')
             setup_error_frame('error')
 
 # get backgroud image
@@ -158,7 +157,6 @@ class Input_aframe(ttk.Frame):
         input_entry = ttk.Entry(self, textvariable=entry_str)
         input_entry.bind('<Return>', lambda event:get_time())
         input_button = ttk.Button(self, text='Get Time', command=get_time)
-        #savestr = tk.StringVar()
         emptyframe = ttk.Frame(self, width=30, height=19)
         errorLable = ttk.Label(self, state='noerror', text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
         emptyframe.pack()
@@ -185,13 +183,10 @@ class Output_txtframe(ttk.Frame):
         global output_txt, output_str
         output_txt = tk.StringVar()
         output_str = tk.StringVar()
-#       self.image = Image.open()
-#       self.image = self.image.resize((450, 32))
-#       self.image = ImageTk.PhotoImage(self.image)
+
         self.image = get_styleimg("outputtext.png", 450, 23)
         self.image2 = get_styleimg("outputtext2.png", 450, 23)
-        #ttk.Frame(self, width=90, height=10).pack(side='left')
-        #ttk.Frame(self, width=90, height=10).pack(side='right')         
+
         ttk.Label(self, border='0', image=self.image, textvariable=output_txt, font=fontstr, foreground='#027696', compound='center').pack(expand=True, side='top')
         ttk.Label(self, border='0', image=self.image2, bootstyle=invstyle, textvariable=output_str, font=fonttxt, foreground=fg, compound='center').pack(expand=True, side='top')
         self.pack()  
@@ -201,19 +196,15 @@ class Time_frame(ttk.Frame):
         super().__init__(master, bootstyle=stylet, width=450, height=190)
         self.pack_propagate(False)
         global output_timestr
-        #self.image = Image.open("timezone.png")
-#        self.image = self.image.resize((450, 390))
-#        self.image = ImageTk.PhotoImage(self.image)
         self.image = get_styleimg("timezone.png", 450, 199)
-        output_timestr = tk.StringVar()
-        #tk.Label(self, image=bgimg).pack(expand=True)
         
+        output_timestr = tk.StringVar()
         ttk.Label(self, border='0', image=self.image, textvariable=output_timestr, font=tfont, compound='center', foreground='#126D90').pack(ipadx='5', side='top')
         self.pack()
 
-        self.after(600, self.utime_frame)
+        self.after(600, self.update_time_frame)
         # update time
-    def utime_frame(self):
+    def update_time_frame(self):
         if backup_country == {}:
         # default time
             default_time()
@@ -224,7 +215,7 @@ class Time_frame(ttk.Frame):
             output_timestr.set(update_time_in)
             output_local_time_str.set(upd_localtime())
 
-        self.after(60000, self.utime_frame)
+        self.after(60000, self.update_time_frame)
 
         
-App('World Time', (450,410))
+App('World Time', (450,428))
