@@ -73,7 +73,7 @@ def get_time():
     gettime_zone = all_zone[country_title_c()]
     timeIn = The_time(gettime_zone)
     backup_country[1] = gettime_zone
-    current_time_in = timeIn.day_time(False)
+    current_time_in = timeIn.day_time('%I:%M %p')
     check_error(1)
 
     output_ctime()
@@ -90,7 +90,7 @@ def output_ctime():
 def upd_localtime():
 #    local = pydatetime()
     global current_day
-    current_day = The_time(False).day_time(True)
+    current_day = The_time(False).day_time("%m/%d/%Y, %I:%M %p")
     output_local_time_str.set(current_day)
 # return to Local_time
     return current_day
@@ -98,11 +98,11 @@ def upd_localtime():
 # set default time 
 def default_time():
     default_zone, country_zone = random.choice(list(all_zone.items()))
-    save_zone = pytime(country_zone)
-    save_time = pydatetime(save_zone)
+ #   save_zone = The_time(country_zone)
+    save_time = The_time(country_zone)
     backup_country[1] = country_zone
     output_str.set(default_zone)
-    default_time_in = save_time.strftime("%I:%M %p")
+    default_time_in = save_time.day_time('%I:%M %p')
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
@@ -142,15 +142,15 @@ class The_time:
             self.pytime = pytz.timezone(zone)
             self.pydatetime = datetime.now(self.pytime)
         elif not zone:
-            self.local_time = datetime.now()
+            self.pydatetime = datetime.now()
 
-    def day_time(self, local: bool):
-        if not local:
-            timein = self.pydatetime.strftime("%I:%M %p")
-        elif local:
-            localtime = self.local_time.strftime("%m/%d/%Y, %I:%M %p")
-            return localtime
-        return timein
+    def day_time(self, local: str):
+#        if not local:
+            timein = self.pydatetime.strftime(local)
+#        elif local:
+#            localtime = self.local_time.strftime("%m/%d/%Y, %I:%M %p")
+            return timein
+
 
 
 class Title_frame(ttk.Frame):
@@ -225,9 +225,8 @@ class Time_frame(ttk.Frame):
         # default time
             default_time()
         else:
-            get_savezone = pytime(backup_country[1])
-            get_timeIn = pydatetime(get_savezone)
-            update_time_in = get_timeIn.strftime("%I:%M %p")
+            get_timeIn = The_time(backup_country[1])
+            update_time_in = get_timeIn.day_time("%I:%M %p")
             output_timestr.set(update_time_in)
             output_local_time_str.set(upd_localtime())
 
