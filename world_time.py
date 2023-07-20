@@ -71,10 +71,9 @@ def get_time():
     global country_tz, current_time_in, TXT_T
     check_error(0)
     gettime_zone = all_zone[country_title_c()]
-    country_tz = pytime(gettime_zone)
-    timeIn = pydatetime(country_tz)
+    timeIn = The_time(gettime_zone)
     backup_country[1] = gettime_zone
-    current_time_in = timeIn.strftime("%I:%M %p")
+    current_time_in = timeIn.day_time(False)
     check_error(1)
 
     output_ctime()
@@ -89,9 +88,9 @@ def output_ctime():
 
 # local time
 def upd_localtime():
-    local = pydatetime()
+#    local = pydatetime()
     global current_day
-    current_day = local.strftime("%m/%d/%Y, %I:%M %p")
+    current_day = The_time(False).day_time(True)
     output_local_time_str.set(current_day)
 # return to Local_time
     return current_day
@@ -136,6 +135,23 @@ def get_styleimg(img: str, wdth: int, hght: int):
     image = image.resize((wdth, hght))
     image = ImageTk.PhotoImage(image)
     return image
+
+class The_time:
+    def __init__(self, zone):
+        if zone:
+            self.pytime = pytz.timezone(zone)
+            self.pydatetime = datetime.now(self.pytime)
+        elif not zone:
+            self.local_time = datetime.now()
+
+    def day_time(self, local: bool):
+        if not local:
+            timein = self.pydatetime.strftime("%I:%M %p")
+        elif local:
+            localtime = self.local_time.strftime("%m/%d/%Y, %I:%M %p")
+            return localtime
+        return timein
+
 
 class Title_frame(ttk.Frame):
     def __init__(self, master):
