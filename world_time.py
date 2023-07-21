@@ -1,6 +1,7 @@
 import tkinter as tk
-from zonedict import allzone as ct
 import ttkbootstrap as ttk
+from ttkwidgets.autocomplete import AutocompleteEntry
+from zonedict import allzone as ct
 from datetime import datetime
 from PIL import Image, ImageTk
 import random 
@@ -86,28 +87,25 @@ def default_time():
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
-def setup_error_frame(error: str):
-    if error == 'error':
+def setup_error_frame(error: bool):
+    if error:
             emptyframe.pack_forget()
-            errorLable.config(state='error')
             errorLable.pack(before=input_entry)
             entry_str.set('')
-    elif error == 'ok':
+    elif not error:
             errorLable.pack_forget()
             emptyframe.pack(before=input_entry)
-            errorLable.config(state='noerror')
             
-
 # check for empty or wrong country
 def check_error(val: bool):
     if not entry_str.get() and not val:
-            setup_error_frame('error')
+            setup_error_frame(True)
     elif entry_str.get() and not val:
         strinput = country_title_c()
         if strinput in all_zone:
-            setup_error_frame('ok')
+            setup_error_frame(False)
         else:
-            setup_error_frame('error')
+            setup_error_frame(True)
 
 # get backgroud image
 def get_styleimg(img: str, wdth: int, hght: int):
@@ -131,8 +129,6 @@ class The_time:
 #            localtime = self.local_time.strftime("%m/%d/%Y, %I:%M %p")
             return timein
 
-
-
 class Title_frame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -148,13 +144,15 @@ class Input_aframe(ttk.Frame):
         self.input_all()
         
     def input_all(self):
+        complete_zone = list(all_zone.keys())
         global entry_str, input_entry, errorLable, emptyframe
         entry_str = tk.StringVar()
-        input_entry = ttk.Entry(self, textvariable=entry_str)
+        # auto complete entry
+        input_entry = AutocompleteEntry(self, textvariable=entry_str, completevalues=complete_zone)
         input_entry.bind('<Return>', lambda event:get_time())
         input_button = ttk.Button(self, text='Get Time', command=get_time)
         emptyframe = ttk.Frame(self, width=30, height=19)
-        errorLable = ttk.Label(self, state='noerror', text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
+        errorLable = ttk.Label(self, text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
         emptyframe.pack()
         input_entry.pack(pady=5)
         input_button.pack(pady=5)

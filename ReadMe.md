@@ -1,13 +1,11 @@
 
-# World Time Python Code
+# World Time
 
 This app helps you get the time of any country in the world.
 
 ## Features
 
 - Get the current time of any country in the world by time zone.
-
-
 
 ## Installation
 
@@ -20,12 +18,11 @@ This app helps you get the time of any country in the world.
 1. Run `python world_time.py`.
 2. Enter the name of the country you want to get the time for.
 
-## Future Work
+## Future Features
 
 - Flag for every country.
 - fix the themes.
 - Time zone mark.
-- country suggestions.
 
  ;)
 
