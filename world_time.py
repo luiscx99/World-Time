@@ -13,7 +13,7 @@ class App(ttk.Window):
     # windows
     def __init__(self, title, size):
         super().__init__()
-        ttk.Style("darkly")
+        ttk.Style("yeti")
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0],size[1])
@@ -27,7 +27,7 @@ class App(ttk.Window):
         # output txt
         self.outputalltext = Output_txtframe(self, 'info', 'inverse-info', 'Calibri 11 bold', 'Calibri 15 bold', '#258fac')
         # time frame
-        self.timeframe = Time_frame(self, 'info', 'inverse-info', 'Calibri 45 bold')
+        self.timeframe = Time_frame(self, 'info', 'inverse-info', 'Calibri 50 bold')
 
         
         self.mainloop()
@@ -138,7 +138,7 @@ class Title_frame(ttk.Frame):
 
 class Input_aframe(ttk.Frame):
     def __init__(self, master):
-        super().__init__(master, width=210, height=100)
+        super().__init__(master, width=250, height=80)
         self.pack_propagate(False)
         self.pack(padx=50)
         self.input_all()
@@ -148,14 +148,14 @@ class Input_aframe(ttk.Frame):
         global entry_str, input_entry, errorLable, emptyframe
         entry_str = tk.StringVar()
         # auto complete entry
-        input_entry = AutocompleteEntry(self, textvariable=entry_str, completevalues=complete_zone)
+        input_entry = AutocompleteEntry(self,textvariable=entry_str, completevalues=complete_zone, font='Calibri 10 bold')
         input_entry.bind('<Return>', lambda event:get_time())
         input_button = ttk.Button(self, text='Get Time', command=get_time)
         emptyframe = ttk.Frame(self, width=30, height=19)
         errorLable = ttk.Label(self, text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
         emptyframe.pack()
-        input_entry.pack(pady=5)
-        input_button.pack(pady=5)
+        input_entry.pack(padx=5, side='left')
+        input_button.pack(padx=5, side='left')
 
 class Local_time(ttk.Frame):
     def __init__(self, master, Ltext: str, Lfont: str, timef: str):
@@ -181,7 +181,7 @@ class Output_txtframe(ttk.Frame):
         self.image = get_styleimg("outputtext.png", 450, 23)
         self.image2 = get_styleimg("outputtext2.png", 450, 23)
 
-        ttk.Label(self, border='0', image=self.image, textvariable=output_txt, font=fontstr, foreground='#027696', compound='center').pack(expand=True, side='top')
+        ttk.Label(self, border='0', image=self.image, bootstyle='cerculean', textvariable=output_txt, font=fontstr, compound='center').pack(expand=True, side='top')
         ttk.Label(self, border='0', image=self.image2, bootstyle=invstyle, textvariable=output_str, font=fonttxt, foreground=fg, compound='center').pack(expand=True, side='top')
         self.pack()  
 
@@ -211,4 +211,4 @@ class Time_frame(ttk.Frame):
         self.after(60000, self.update_time_frame)
 
         
-App('World Time', (450,428))
+App('World Time', (450,407))
