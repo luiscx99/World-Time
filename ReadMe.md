@@ -1,7 +1,7 @@
 
 # World Time Python Code
 
-This app that helps you get the time of any country in the world.
+This app helps you get the time of any country in the world.
 
 ## Features
 
