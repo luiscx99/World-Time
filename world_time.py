@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 import random 
 import pytz
 
+
 # world time version 0.6 by: luiscx99
 
 class App(ttk.Window):
@@ -18,6 +19,7 @@ class App(ttk.Window):
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0],size[1])
         self.maxsize(size[0],size[1])
+       
         # title_frame
         self.titlelable = Title_frame(self)
         # input_fram
@@ -28,9 +30,12 @@ class App(ttk.Window):
         self.outputalltext = Output_txtframe(self, 'info', 'inverse-info', 'Calibri 11 bold', 'Calibri 15 bold', '#258fac')
         # time frame
         self.timeframe = Time_frame(self, 'info', 'inverse-info', 'Calibri 50 bold')
-
+        # Setting app icon
+        icon = get_styleimg('World-Time/GUI/world_time_icon.ico', 256, 256)
+        self.wm_iconphoto(False, icon)
         
         self.mainloop()
+
  
 # import all time zone dictionary
 all_zone = ct.zone_dict()
@@ -178,8 +183,8 @@ class Output_txtframe(ttk.Frame):
         output_txt = tk.StringVar()
         output_str = tk.StringVar()
 
-        self.image = get_styleimg("outputtext.png", 450, 23)
-        self.image2 = get_styleimg("outputtext2.png", 450, 23)
+        self.image = get_styleimg("World-Time/outputtext.png", 450, 23)
+        self.image2 = get_styleimg("World-Time/outputtext2.png", 450, 23)
 
         ttk.Label(self, border='0', image=self.image, bootstyle='cerculean', textvariable=output_txt, font=fontstr, compound='center').pack(expand=True, side='top')
         ttk.Label(self, border='0', image=self.image2, bootstyle=invstyle, textvariable=output_str, font=fonttxt, foreground=fg, compound='center').pack(expand=True, side='top')
@@ -190,7 +195,7 @@ class Time_frame(ttk.Frame):
         super().__init__(master, bootstyle=stylet, width=450, height=190)
         self.pack_propagate(False)
         global output_timestr
-        self.image = get_styleimg("timezone.png", 450, 199)
+        self.image = get_styleimg("World-Time/timezone.png", 450, 199)
         
         output_timestr = tk.StringVar()
         ttk.Label(self, border='0', image=self.image, textvariable=output_timestr, font=tfont, compound='center', foreground='#126D90').pack(ipadx='5', side='top')
@@ -210,5 +215,4 @@ class Time_frame(ttk.Frame):
 
         self.after(60000, self.update_time_frame)
 
-        
 App('World Time', (450,407))
