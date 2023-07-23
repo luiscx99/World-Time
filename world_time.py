@@ -61,7 +61,7 @@ def country_title_c():
 
 
 def get_time():
-    global country_tz, current_time_in, TXT_T
+    global country_tz, current_time_in
     check_error(0)
     gettime_zone = all_zone[country_title_c()]
     timeIn = The_time(gettime_zone)
@@ -85,11 +85,9 @@ def output_ctime():
 
 
 def upd_localtime():
-    #    local = pydatetime()
     global current_day
     current_day = The_time(False).day_time("%m/%d/%Y, %I:%M %p")
     output_local_time_str.set(current_day)
-# return to Local_time
     return current_day
 
 # set default time
@@ -97,7 +95,6 @@ def upd_localtime():
 
 def default_time():
     default_zone, country_zone = random.choice(list(all_zone.items()))
- #   save_zone = The_time(country_zone)
     save_time = The_time(country_zone)
     backup_country[1] = country_zone
     output_str.set(default_zone)
@@ -108,12 +105,12 @@ def default_time():
 
 def setup_error_frame(error: bool):
     if error:
-        emptyframe.pack_forget()
-        errorLable.pack(before=input_entry)
+        errorLable.pack()
         entry_str.set('')
+        errorLable.after(5000, errorLable.pack_forget)
     elif not error:
         errorLable.pack_forget()
-        emptyframe.pack(before=input_entry)
+
 
 # check for empty or wrong country
 
@@ -170,17 +167,17 @@ class Input_aframe(ttk.Frame):
 
     def input_all(self):
         complete_zone = list(all_zone.keys())
-        global entry_str, input_entry, errorLable, emptyframe
+        global entry_str, input_entry, errorLable
         entry_str = tk.StringVar()
         # auto complete entry
         input_entry = AutocompleteEntry(
             self, textvariable=entry_str, completevalues=complete_zone, font='Calibri 10 bold')
         input_entry.bind('<Return>', lambda event: get_time())
         input_button = ttk.Button(self, text='Get Time', command=get_time)
-        emptyframe = ttk.Frame(self, width=30, height=19)
+        errorframe = ttk.Frame(self, width=30, height=19)
         errorLable = ttk.Label(
-            self, text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
-        emptyframe.pack()
+            errorframe, text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
+        errorframe.pack()
         input_entry.pack(padx=5, side='left')
         input_button.pack(padx=5, side='left')
 
@@ -211,9 +208,9 @@ class Output_txtframe(ttk.Frame):
         self.image = get_styleimg("outputtext.png", 450, 23)
         self.image2 = get_styleimg("outputtext2.png", 450, 23)
 
-        ttk.Label(self, border='0', image=self.image, bootstyle='cerculean',
+        ttk.Label(self, border='0', image=self.image, foreground=fg,
                   textvariable=output_txt, font=fontstr, compound='center').pack(expand=True, side='top')
-        ttk.Label(self, border='0', image=self.image2, bootstyle=invstyle, textvariable=output_str,
+        ttk.Label(self, border='0', image=self.image2, textvariable=output_str,
                   font=fonttxt, foreground=fg, compound='center').pack(expand=True, side='top')
         self.pack()
 
