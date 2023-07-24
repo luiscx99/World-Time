@@ -102,28 +102,24 @@ def default_time():
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
+# setup error frame
 
-def setup_error_frame(error: bool):
-    if error:
-        errorLable.pack()
-        entry_str.set('')
-        errorLable.after(5000, errorLable.pack_forget)
-    elif not error:
-        errorLable.pack_forget()
 
+def setup_error_frame():
+    error_lable.pack()
+    entry_str.set('')
+    error_lable.after(5000, error_lable.pack_forget)
 
 # check for empty or wrong country
 
 
 def check_error(val: bool):
     if not entry_str.get() and not val:
-        setup_error_frame(True)
+        setup_error_frame()
     elif entry_str.get() and not val:
         strinput = country_title_c()
-        if strinput in all_zone:
-            setup_error_frame(False)
-        else:
-            setup_error_frame(True)
+        if strinput not in all_zone:
+            setup_error_frame()
 
 # get images
 
@@ -166,8 +162,8 @@ class Input_aframe(ttk.Frame):
         self.input_all()
 
     def input_all(self):
+        global entry_str, input_entry, error_lable
         complete_zone = list(all_zone.keys())
-        global entry_str, input_entry, errorLable
         entry_str = tk.StringVar()
         # auto complete entry
         input_entry = AutocompleteEntry(
@@ -175,7 +171,7 @@ class Input_aframe(ttk.Frame):
         input_entry.bind('<Return>', lambda event: get_time())
         input_button = ttk.Button(self, text='Get Time', command=get_time)
         errorframe = ttk.Frame(self, width=30, height=19)
-        errorLable = ttk.Label(
+        error_lable = ttk.Label(
             errorframe, text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
         errorframe.pack()
         input_entry.pack(padx=5, side='left')
@@ -205,8 +201,8 @@ class Output_txtframe(ttk.Frame):
         output_txt = tk.StringVar()
         output_str = tk.StringVar()
 
-        self.image = get_styleimg("outputtext.png", 450, 23)
-        self.image2 = get_styleimg("outputtext2.png", 450, 23)
+        self.image = get_styleimg("GUI/outputtext.png", 450, 23)
+        self.image2 = get_styleimg("GUI/outputtext2.png", 450, 23)
 
         ttk.Label(self, border='0', image=self.image, foreground=fg,
                   textvariable=output_txt, font=fontstr, compound='center').pack(expand=True, side='top')
@@ -220,13 +216,12 @@ class Time_frame(ttk.Frame):
         super().__init__(master, bootstyle=stylet, width=450, height=190)
         self.pack_propagate(False)
         global output_timestr
-        self.image = get_styleimg("timezone.png", 450, 190)
+        self.image = get_styleimg("GUI/timezone.png", 450, 190)
 
         output_timestr = tk.StringVar()
         ttk.Label(self, border='0', image=self.image, textvariable=output_timestr,
                   font=tfont, compound='center', foreground='#126D90').pack(ipadx='5', side='top')
         self.pack()
-
         self.after(600, self.update_time_frame)
         # update time
 
