@@ -201,8 +201,8 @@ class Output_txtframe(ttk.Frame):
         output_txt = tk.StringVar()
         output_str = tk.StringVar()
 
-        self.image = get_styleimg("GUI/outputtext.png", 450, 23)
-        self.image2 = get_styleimg("GUI/outputtext2.png", 450, 23)
+        self.image = get_styleimg("GUI/worldmap3.png", 450, 23)
+        self.image2 = get_styleimg("GUI/worldmap2.png", 450, 23)
 
         ttk.Label(self, border='0', image=self.image, foreground=fg,
                   textvariable=output_txt, font=fontstr, compound='center').pack(expand=True, side='top')
@@ -216,7 +216,7 @@ class Time_frame(ttk.Frame):
         super().__init__(master, bootstyle=stylet, width=450, height=190)
         self.pack_propagate(False)
         global output_timestr
-        self.image = get_styleimg("GUI/timezone.png", 450, 190)
+        self.image = get_styleimg("GUI/worldmap1.png", 450, 190)
 
         output_timestr = tk.StringVar()
         ttk.Label(self, border='0', image=self.image, textvariable=output_timestr,
