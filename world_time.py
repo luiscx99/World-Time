@@ -1,5 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as ttk
+from ttkbootstrap.tooltip import ToolTip as tooltips
 from ttkwidgets.autocomplete import AutocompleteEntry
 from zonedict import allzone as ct
 from datetime import datetime
@@ -14,7 +15,7 @@ class App(ttk.Window):
     # windows
     def __init__(self, title, size):
         super().__init__()
-        ttk.Style("yeti")
+        ttk.Style('cerculean')
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0], size[1])
@@ -29,10 +30,10 @@ class App(ttk.Window):
             self, 'The local time is:', 'Calibri 9 bold', 'Calibri 10 bold')
         # output txt
         self.outputalltext = Output_txtframe(
-            self, 'info', 'inverse-info', 'Calibri 11 bold', 'Calibri 15 bold', '#258fac')
+            self, 'Calibri 11 bold', 'Calibri 15 bold')
         # time frame
         self.timeframe = Time_frame(
-            self, 'info', 'inverse-info', 'Calibri 50 bold')
+            self, 'Calibri 50 bold')
         # Setting app icon
         icon = get_styleimg('GUI/world_time_icon.ico', 256, 256)
         self.wm_iconphoto(False, icon)
@@ -45,6 +46,7 @@ all_zone = ct.zone_dict()
 
 TXT_T = 'This is the current time in:'
 backup_country = {}
+
 
 # fix country input to title case
 
@@ -110,6 +112,7 @@ def setup_error_frame():
     entry_str.set('')
     error_lable.after(5000, error_lable.pack_forget)
 
+
 # check for empty or wrong country
 
 
@@ -147,11 +150,55 @@ class The_time:
 class Title_frame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
-        ttk.Label(self, text='World Time',
-                  font='Calibri 24 bold').pack(pady=10)
-        ttk.Label(self, text='Get the time from any country in the world',
-                  font='Calibri 10 bold').pack()
-        self.pack()
+        self.columnconfigure(0, weight=0)
+        self.columnconfigure(1, weight=1)
+        title_lable = ttk.Label(self, text='World Time',
+                                font='Calibri 24 bold')
+        title_lable.grid(column=1, row=0)
+        title_info = ttk.Label(
+            self, text='Get the time from any country in the world', font='Calibri 10 bold')
+        title_info.grid(column=1, row=1)
+        self.theme_image = get_styleimg("GUI/themes.png", 15, 15)
+        self.info_image = get_styleimg("GUI/info.png", 14, 14)
+
+        option_btn = ttk.Button(
+            self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link')
+        option_btn.grid(column=0, row=0, padx=15)
+        option_btn2 = ttk.Button(
+            self, image=self.info_image, bootstyle='info_link')
+        option_btn2.grid(column=2, row=0, padx=15)
+        global tool_tip
+        tool_tip = tooltips(
+            option_btn, text="Select Dark Mode", bootstyle='info_inverse')
+        tooltips(option_btn2, text="App Info", bootstyle='info_inverse')
+
+        self.pack(fill='x', pady=5)
+
+    def change_theme(self):
+        App.style = ttk.Style()
+        global setimg
+        current_theme = App.style.theme_use()
+        inv_image = {output_label1: ['GUI/darkmode/invertworldmap1.png', 450, 190, 'GUI/lightmode/worldmap1.png'],
+                     output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'], output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png']}
+        tips_txt = ['Select Light Mode', 'Select Dark Mode']
+        if current_theme != 'darkly':
+            current_theme = 'darkly'
+            tool_tip.text = tips_txt[0]
+            for invimgkey, invimgval in inv_image.items():
+                setimg = get_styleimg(
+                    invimgval[0], invimgval[1], invimgval[2])
+                invimgkey.config(image=setimg)
+                invimgkey.imagerf = setimg
+        else:
+            current_theme = 'cerculean'
+            tool_tip.text = tips_txt[1]
+            for invimgkey, invimgval in inv_image.items():
+                setimg = get_styleimg(
+                    invimgval[3], invimgval[1], invimgval[2])
+                invimgkey.config(image=setimg)
+                invimgkey.imagerf = setimg
+
+        App.style.theme_use(current_theme)
 
 
 class Input_aframe(ttk.Frame):
@@ -159,9 +206,6 @@ class Input_aframe(ttk.Frame):
         super().__init__(master, width=250, height=80)
         self.pack_propagate(False)
         self.pack(padx=50)
-        self.input_all()
-
-    def input_all(self):
         global entry_str, input_entry, error_lable
         complete_zone = list(all_zone.keys())
         entry_str = tk.StringVar()
@@ -194,33 +238,35 @@ class Local_time(ttk.Frame):
 
 
 class Output_txtframe(ttk.Frame):
-    def __init__(self, master, style: str, invstyle: str, fontstr: str, fonttxt: str, fg: str):
-        super().__init__(master, bootstyle=style, width=450, height=46)
+    def __init__(self, master, fontstr: str, fonttxt: str):
+        super().__init__(master, width=450, height=46)
         self.pack_propagate(False)
-        global output_txt, output_str
+        global output_txt, output_str, output_label3, output_lable2
         output_txt = tk.StringVar()
         output_str = tk.StringVar()
+        self.image = get_styleimg("GUI/lightmode/worldmap3.png", 450, 23)
+        self.image2 = get_styleimg("GUI/lightmode/worldmap2.png", 450, 23)
 
-        self.image = get_styleimg("GUI/worldmap3.png", 450, 23)
-        self.image2 = get_styleimg("GUI/worldmap2.png", 450, 23)
-
-        ttk.Label(self, border='0', image=self.image, foreground=fg,
-                  textvariable=output_txt, font=fontstr, compound='center').pack(expand=True, side='top')
-        ttk.Label(self, border='0', image=self.image2, textvariable=output_str,
-                  font=fonttxt, foreground=fg, compound='center').pack(expand=True, side='top')
+        output_label3 = ttk.Label(self, border='0', image=self.image,
+                                  textvariable=output_txt, font=fontstr, compound='center')
+        output_label3.pack(expand=True, side='top')
+        output_lable2 = ttk.Label(self, border='0', image=self.image2, textvariable=output_str,
+                                  font=fonttxt, compound='center')
+        output_lable2.pack(expand=True, side='top')
         self.pack()
 
 
 class Time_frame(ttk.Frame):
-    def __init__(self, master, stylet: str, invtext: str, tfont: str):
-        super().__init__(master, bootstyle=stylet, width=450, height=190)
+    def __init__(self, master, tfont: str):
+        super().__init__(master, width=450, height=190)
         self.pack_propagate(False)
-        global output_timestr
-        self.image = get_styleimg("GUI/worldmap1.png", 450, 190)
+        global output_timestr, output_label1
+        self.image = get_styleimg("GUI/lightmode/worldmap1.png", 450, 190)
 
         output_timestr = tk.StringVar()
-        ttk.Label(self, border='0', image=self.image, textvariable=output_timestr,
-                  font=tfont, compound='center', foreground='#126D90').pack(ipadx='5', side='top')
+        output_label1 = ttk.Label(self, border='0', image=self.image, textvariable=output_timestr,
+                                  font=tfont, foreground='#126D90',  compound='center')
+        output_label1.pack(ipadx='5', side='top')
         self.pack()
         self.after(600, self.update_time_frame)
         # update time
@@ -238,4 +284,4 @@ class Time_frame(ttk.Frame):
         self.after(60000, self.update_time_frame)
 
 
-App('World Time', (450, 437))
+App('World Time', (450, 427))
