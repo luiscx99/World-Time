@@ -7,9 +7,10 @@ from datetime import datetime
 from PIL import Image, ImageTk
 import random
 import pytz
-
+import threading as thrd
 
 # world time version 0.6 by: luiscx99
+
 
 class App(ttk.Window):
     # windows
@@ -46,7 +47,6 @@ all_zone = ct.zone_dict()
 
 TXT_T = 'This is the current time in:'
 backup_country = {}
-
 
 # fix country input to title case
 
@@ -104,6 +104,7 @@ def default_time():
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
+
 # setup error frame
 
 
@@ -133,6 +134,8 @@ def get_styleimg(img: str, wdth: int, hght: int):
     image = ImageTk.PhotoImage(image)
     return image
 
+# setup theme images
+
 
 def setup_theme(val: bool):
     global setimg
@@ -145,6 +148,8 @@ def setup_theme(val: bool):
         setimg = get_styleimg(setimgval, invimgval[1], invimgval[2])
         invimgkey.config(image=setimg)
         invimgkey.imagerf = setimg
+
+# get and return the time
 
 
 class The_time:
@@ -159,20 +164,20 @@ class The_time:
         timein = self.pydatetime.strftime(local)
         return timein
 
+# main top frame
+
 
 class Title_frame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=1)
-        title_lable = ttk.Label(self, text='World Time',
-                                font='Calibri 24 bold')
-        title_lable.grid(column=1, row=0)
-        title_info = ttk.Label(
-            self, text='Get the time from any country in the world', font='Calibri 10 bold')
-        title_info.grid(column=1, row=1)
-        self.theme_image = get_styleimg("GUI/themes.png", 15, 15)
-        self.info_image = get_styleimg("GUI/info.png", 14, 14)
+        ttk.Label(self, text='World Time',
+                  font='Calibri 24 bold').grid(column=1, row=0)
+        ttk.Label(self, text='Get the time from any country in the world',
+                  font='Calibri 10 bold').grid(column=1, row=1)
+        self.theme_image = get_styleimg("GUI/themes.png", 16, 16)
+        self.info_image = get_styleimg("GUI/info.png", 15, 15)
 
         option_btn = ttk.Button(
             self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link')
@@ -186,6 +191,7 @@ class Title_frame(ttk.Frame):
         tooltips(option_btn2, text="App Info", bootstyle='info_inverse')
 
         self.pack(fill='x', pady=5)
+# change theme
 
     def change_theme(self):
         App.style = ttk.Style()
@@ -223,7 +229,7 @@ class Input_aframe(ttk.Frame):
         input_entry.pack(padx=5, side='left')
         input_button.pack(padx=5, side='left')
 
-# local time frame
+# local time middle frame
 
 
 class Local_time(ttk.Frame):
@@ -261,7 +267,7 @@ class Output_txtframe(ttk.Frame):
         output_lable2.pack(expand=True, side='top')
         self.pack()
 
-# main time frame
+# main time bottom frame
 
 
 class Time_frame(ttk.Frame):
@@ -280,9 +286,12 @@ class Time_frame(ttk.Frame):
         # update time
 
     def update_time_frame(self):
+        global thread1
+
         if backup_country == {}:
             # default time
-            default_time()
+            thread1 = thrd.Thread(target=default_time)
+            thread1.start()
         else:
             get_timeIn = The_time(backup_country[1])
             update_time_in = get_timeIn.day_time("%I:%M %p")
