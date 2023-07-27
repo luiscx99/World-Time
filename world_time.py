@@ -15,7 +15,7 @@ class App(ttk.Window):
     # windows
     def __init__(self, title, size):
         super().__init__()
-        ttk.Style('cerculean')
+        ttk.Style('worldtime')
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0], size[1])
@@ -134,6 +134,19 @@ def get_styleimg(img: str, wdth: int, hght: int):
     return image
 
 
+def setup_theme(val: bool):
+    global setimg
+    inv_image = {output_label1: ['GUI/darkmode/invertworldmap1.png', 450, 190, 'GUI/lightmode/worldmap1.png'],
+                 output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'], output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png']}
+    for invimgkey, invimgval in inv_image.items():
+        setimgval = invimgval[3]
+        if not val:
+            setimgval = invimgval[0]
+        setimg = get_styleimg(setimgval, invimgval[1], invimgval[2])
+        invimgkey.config(image=setimg)
+        invimgkey.imagerf = setimg
+
+
 class The_time:
     def __init__(self, zone):
         if zone:
@@ -176,27 +189,16 @@ class Title_frame(ttk.Frame):
 
     def change_theme(self):
         App.style = ttk.Style()
-        global setimg
         current_theme = App.style.theme_use()
-        inv_image = {output_label1: ['GUI/darkmode/invertworldmap1.png', 450, 190, 'GUI/lightmode/worldmap1.png'],
-                     output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'], output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png']}
         tips_txt = ['Select Light Mode', 'Select Dark Mode']
         if current_theme != 'darkly':
             current_theme = 'darkly'
             tool_tip.text = tips_txt[0]
-            for invimgkey, invimgval in inv_image.items():
-                setimg = get_styleimg(
-                    invimgval[0], invimgval[1], invimgval[2])
-                invimgkey.config(image=setimg)
-                invimgkey.imagerf = setimg
+            setup_theme(False)
         else:
-            current_theme = 'cerculean'
+            current_theme = 'worldtime'
             tool_tip.text = tips_txt[1]
-            for invimgkey, invimgval in inv_image.items():
-                setimg = get_styleimg(
-                    invimgval[3], invimgval[1], invimgval[2])
-                invimgkey.config(image=setimg)
-                invimgkey.imagerf = setimg
+            setup_theme(True)
 
         App.style.theme_use(current_theme)
 
@@ -221,6 +223,8 @@ class Input_aframe(ttk.Frame):
         input_entry.pack(padx=5, side='left')
         input_button.pack(padx=5, side='left')
 
+# local time frame
+
 
 class Local_time(ttk.Frame):
     def __init__(self, master, Ltext: str, Lfont: str, timef: str):
@@ -235,6 +239,8 @@ class Local_time(ttk.Frame):
         localttx.pack(side='top', fill='x')
         localtimetxt.pack(side='top', fill='x')
         self.pack(padx=7)
+
+# country text
 
 
 class Output_txtframe(ttk.Frame):
@@ -255,6 +261,8 @@ class Output_txtframe(ttk.Frame):
         output_lable2.pack(expand=True, side='top')
         self.pack()
 
+# main time frame
+
 
 class Time_frame(ttk.Frame):
     def __init__(self, master, tfont: str):
@@ -265,7 +273,7 @@ class Time_frame(ttk.Frame):
 
         output_timestr = tk.StringVar()
         output_label1 = ttk.Label(self, border='0', image=self.image, textvariable=output_timestr,
-                                  font=tfont, foreground='#126D90',  compound='center')
+                                  font=tfont,  compound='center')
         output_label1.pack(ipadx='5', side='top')
         self.pack()
         self.after(600, self.update_time_frame)
