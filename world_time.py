@@ -140,7 +140,10 @@ def get_styleimg(img: str, wdth: int, hght: int):
 def setup_theme(val: bool):
     global setimg
     inv_image = {output_label1: ['GUI/darkmode/invertworldmap1.png', 450, 190, 'GUI/lightmode/worldmap1.png'],
-                 output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'], output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png']}
+                 output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'],
+                 output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png'],
+                 option_btn: ['GUI/darkmode/themesdark.png', 16, 16, 'GUI/lightmode/themeslight.png'],
+                 option_btn2: ['GUI/darkmode/infodark.png', 16, 16, 'GUI/lightmode/infolight.png']}
     for invimgkey, invimgval in inv_image.items():
         setimgval = invimgval[3]
         if not val:
@@ -170,14 +173,16 @@ class The_time:
 class Title_frame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
+        global tool_tip, option_btn, option_btn2
         self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=1)
         ttk.Label(self, text='World Time',
                   font='Calibri 24 bold').grid(column=1, row=0)
         ttk.Label(self, text='Get the time from any country in the world',
                   font='Calibri 10 bold').grid(column=1, row=1)
-        self.theme_image = get_styleimg("GUI/themes.png", 16, 16)
-        self.info_image = get_styleimg("GUI/info.png", 15, 15)
+        self.theme_image = get_styleimg(
+            "GUI/lightmode/themeslight.png", 16, 16)
+        self.info_image = get_styleimg("GUI/lightmode/infolight.png", 16, 16)
 
         option_btn = ttk.Button(
             self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link')
@@ -185,7 +190,6 @@ class Title_frame(ttk.Frame):
         option_btn2 = ttk.Button(
             self, image=self.info_image, bootstyle='info_link')
         option_btn2.grid(column=2, row=0, padx=15)
-        global tool_tip
         tool_tip = tooltips(
             option_btn, text="Select Dark Mode", bootstyle='info_inverse')
         tooltips(option_btn2, text="App Info", bootstyle='info_inverse')
@@ -282,14 +286,14 @@ class Time_frame(ttk.Frame):
                                   font=tfont,  compound='center')
         output_label1.pack(ipadx='5', side='top')
         self.pack()
-        self.after(600, self.update_time_frame)
+        self.after(500, self.update_time_frame)
         # update time
 
     def update_time_frame(self):
         global thread1
 
         if backup_country == {}:
-            # default time
+            # fix to prevent the app from hanged at startup
             thread1 = thrd.Thread(target=default_time)
             thread1.start()
         else:
