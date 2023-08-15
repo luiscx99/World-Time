@@ -9,7 +9,7 @@ import random
 import pytz
 import threading as thrd
 
-# world time version 0.6 by: luiscx99
+# world time version 0.7 by: luiscx99
 
 
 class App(ttk.Window):
@@ -18,7 +18,12 @@ class App(ttk.Window):
         super().__init__()
         ttk.Style('worldtime')
         self.title(title)
-        self.geometry(f'{size[0]}x{size[1]}')
+        global screen_math_w, screen_math_h
+        scre_wdth, scre_hgth = self.winfo_screenwidth(), self.winfo_screenheight()
+        screen_math_w, screen_math_h = scre_wdth / 2 - 250, scre_hgth / 2 - 290
+
+        self.geometry(
+            f'{size[0]}x{size[1]}+{int(screen_math_w)}+{int(screen_math_h)}')
         self.minsize(size[0], size[1])
         self.maxsize(size[0], size[1])
 
@@ -42,9 +47,23 @@ class App(ttk.Window):
         self.mainloop()
 
 
+class Info_window(ttk.Toplevel):
+    def __init__(self):
+        super().__init__()
+        self.geometry("%dx%d+%d+%d" %
+                      (370, 400, screen_math_w + 150, screen_math_h + 40))
+        self.title("Info")
+        icon = get_styleimg('GUI/lightmode/infolight.png', 256, 256)
+        self.wm_iconphoto(False, icon)
+
+        with open('ReadMe.md', 'r') as f:
+            # tk.insert('end', f.read())
+            text_window = ttk.Label(self, text=f.read())
+            text_window.pack()
+
+
 # import time zone dictionary
 all_zone = ct.zone_dict()
-
 TXT_T = 'This is the current time in:'
 backup_country = {}
 
@@ -104,7 +123,6 @@ def default_time():
     output_timestr.set(default_time_in)
     output_txt.set(TXT_T)
 
-
 # setup error frame
 
 
@@ -112,7 +130,6 @@ def setup_error_frame():
     error_lable.pack()
     entry_str.set('')
     error_lable.after(5000, error_lable.pack_forget)
-
 
 # check for empty or wrong country
 
@@ -142,8 +159,8 @@ def setup_theme(val: bool):
     inv_image = {output_label1: ['GUI/darkmode/invertworldmap1.png', 450, 190, 'GUI/lightmode/worldmap1.png'],
                  output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'],
                  output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png'],
-                 option_btn: ['GUI/darkmode/themesdark.png', 16, 16, 'GUI/lightmode/themeslight.png'],
-                 option_btn2: ['GUI/darkmode/infodark.png', 16, 16, 'GUI/lightmode/infolight.png']}
+                 option_btn: ['GUI/darkmode/themesdark.png', 18, 18, 'GUI/lightmode/themeslight.png'],
+                 option_btn2: ['GUI/darkmode/infodark.png', 18, 18, 'GUI/lightmode/infolight.png']}
     for invimgkey, invimgval in inv_image.items():
         setimgval = invimgval[3]
         if not val:
@@ -181,14 +198,14 @@ class Title_frame(ttk.Frame):
         ttk.Label(self, text='Get the time from any country in the world',
                   font='Calibri 10 bold').grid(column=1, row=1)
         self.theme_image = get_styleimg(
-            "GUI/lightmode/themeslight.png", 16, 16)
-        self.info_image = get_styleimg("GUI/lightmode/infolight.png", 16, 16)
+            "GUI/lightmode/themeslight.png", 18, 18)
+        self.info_image = get_styleimg("GUI/lightmode/infolight.png", 18, 18)
 
         option_btn = ttk.Button(
-            self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link')
+            self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link', cursor='hand2')
         option_btn.grid(column=0, row=0, padx=15)
         option_btn2 = ttk.Button(
-            self, image=self.info_image, bootstyle='info_link')
+            self, image=self.info_image, command=lambda: Info_window(), bootstyle='info_link', cursor='hand2')
         option_btn2.grid(column=2, row=0, padx=15)
         tool_tip = tooltips(
             option_btn, text="Select Dark Mode", bootstyle='info_inverse')
@@ -290,7 +307,6 @@ class Time_frame(ttk.Frame):
         # update time
 
     def update_time_frame(self):
-        global thread1
 
         if backup_country == {}:
             # fix to prevent the app from hanged at startup
