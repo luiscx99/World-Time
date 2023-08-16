@@ -8,8 +8,9 @@ from PIL import Image, ImageTk
 import random
 import pytz
 import threading as thrd
+from tkhtmlview import HTMLText, RenderHTML
 
-# world time version 0.7 by: luiscx99
+# world time beta ver 0.8 by: luiscx99
 
 
 class App(ttk.Window):
@@ -51,15 +52,54 @@ class Info_window(ttk.Toplevel):
     def __init__(self):
         super().__init__()
         self.geometry("%dx%d+%d+%d" %
-                      (370, 400, screen_math_w + 150, screen_math_h + 40))
+                      (365, 450, screen_math_w + 150, screen_math_h + 40))
         self.title("Info")
+        self.maxsize(365, 450)
         icon = get_styleimg('GUI/lightmode/infolight.png', 256, 256)
         self.wm_iconphoto(False, icon)
 
-        with open('ReadMe.md', 'r') as f:
-            # tk.insert('end', f.read())
-            text_window = ttk.Label(self, text=f.read())
-            text_window.pack()
+        scrollbar_frame = ScrollbarFrame(self)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        scrollbar_frame.grid(row=0, column=0, sticky='nsew')
+
+        html_frame = scrollbar_frame.scrolled_frame
+        html_window = HTMLText(
+            html_frame, html=RenderHTML('GUI/info.html'), width=57)
+        html_window.grid()
+        html_window.fit_height()
+
+
+# scrollbar layout to the right
+class ScrollbarFrame(tk.Frame):
+    def __init__(self, parent, **kwargs):
+        tk.Frame.__init__(self, parent, **kwargs)
+
+        scrollbar = tk.Scrollbar(self, orient="vertical", width=12)
+        scrollbar.pack(side="right", fill="y")
+
+        # canvas
+        self.canvas = tk.Canvas(self, borderwidth='0')
+        self.canvas.pack(side="left", fill="both", expand=True)
+
+        # bind the scrollbar to the self.canvas
+        self.canvas.configure(yscrollcommand=scrollbar.set)
+        scrollbar.configure(command=self.canvas.yview)
+
+        # frame to be scrolled
+        self.scrolled_frame = tk.Frame(self.canvas, borderwidth='0')
+        self.canvas.create_window(
+            (4, 4), window=self.scrolled_frame, anchor="nw")
+
+        # configures the scrollregion
+        self.scrolled_frame.bind("<Configure>", self.on_configure)
+        self.scrolled_frame.bind_all("<MouseWheel>", self.on_mousewheel)
+
+    def on_mousewheel(self, event):
+        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+    def on_configure(self, event):
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
 
 # import time zone dictionary
@@ -159,8 +199,8 @@ def setup_theme(val: bool):
     inv_image = {output_label1: ['GUI/darkmode/invertworldmap1.png', 450, 190, 'GUI/lightmode/worldmap1.png'],
                  output_lable2: ['GUI/darkmode/invertworldmap2.png', 450, 23, 'GUI/lightmode/worldmap2.png'],
                  output_label3: ['GUI/darkmode/invertworldmap3.png', 450, 23, 'GUI/lightmode/worldmap3.png'],
-                 option_btn: ['GUI/darkmode/themesdark.png', 18, 18, 'GUI/lightmode/themeslight.png'],
-                 option_btn2: ['GUI/darkmode/infodark.png', 18, 18, 'GUI/lightmode/infolight.png']}
+                 change_theme_btn: ['GUI/darkmode/themesdark.png', 18, 18, 'GUI/lightmode/themeslight.png'],
+                 info_window_btn: ['GUI/darkmode/infodark.png', 18, 18, 'GUI/lightmode/infolight.png']}
     for invimgkey, invimgval in inv_image.items():
         setimgval = invimgval[3]
         if not val:
@@ -190,33 +230,42 @@ class The_time:
 class Title_frame(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
-        global tool_tip, option_btn, option_btn2
+        global tool_tip, change_theme_btn, info_window_btn
         self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=1)
+
         ttk.Label(self, text='World Time',
                   font='Calibri 24 bold').grid(column=1, row=0)
         ttk.Label(self, text='Get the time from any country in the world',
                   font='Calibri 10 bold').grid(column=1, row=1)
+
+        # images
         self.theme_image = get_styleimg(
             "GUI/lightmode/themeslight.png", 18, 18)
         self.info_image = get_styleimg("GUI/lightmode/infolight.png", 18, 18)
 
-        option_btn = ttk.Button(
+        # change theme button
+        change_theme_btn = ttk.Button(
             self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link', cursor='hand2')
-        option_btn.grid(column=0, row=0, padx=15)
-        option_btn2 = ttk.Button(
+        change_theme_btn.grid(column=0, row=0, padx=15)
+
+        # about window button
+        info_window_btn = ttk.Button(
             self, image=self.info_image, command=lambda: Info_window(), bootstyle='info_link', cursor='hand2')
-        option_btn2.grid(column=2, row=0, padx=15)
+        info_window_btn.grid(column=2, row=0, padx=15)
+
+        # tool tips
         tool_tip = tooltips(
-            option_btn, text="Select Dark Mode", bootstyle='info_inverse')
-        tooltips(option_btn2, text="App Info", bootstyle='info_inverse')
+            change_theme_btn, text="Select Dark Mode", bootstyle='info_inverse')
+        tooltips(info_window_btn, text="App Info", bootstyle='info_inverse')
 
         self.pack(fill='x', pady=5)
-# change theme
 
+        # change theme
     def change_theme(self):
         App.style = ttk.Style()
         current_theme = App.style.theme_use()
+
         tips_txt = ['Select Light Mode', 'Select Dark Mode']
         if current_theme != 'darkly':
             current_theme = 'darkly'
