@@ -17,7 +17,7 @@ class App(ttk.Window):
     # windows
     def __init__(self, title, size):
         super().__init__()
-        ttk.Style('worldtime')
+        ttk.Style('cerculean')
         self.title(title)
         global screen_math_w, screen_math_h
         scre_wdth, scre_hgth = self.winfo_screenwidth(), self.winfo_screenheight()
@@ -265,15 +265,18 @@ class Title_frame(ttk.Frame):
     def change_theme(self):
         App.style = ttk.Style()
         current_theme = App.style.theme_use()
-
+        global output_label1
         tips_txt = ['Select Light Mode', 'Select Dark Mode']
+        fg = ['#ffffff', '#287CA9']
         if current_theme != 'darkly':
             current_theme = 'darkly'
             tool_tip.text = tips_txt[0]
+            output_label1.config(foreground=fg[0])
             setup_theme(False)
         else:
-            current_theme = 'worldtime'
+            current_theme = 'cerculean'
             tool_tip.text = tips_txt[1]
+            output_label1.config(foreground=fg[1])
             setup_theme(True)
 
         App.style.theme_use(current_theme)
@@ -349,7 +352,7 @@ class Time_frame(ttk.Frame):
 
         output_timestr = tk.StringVar()
         output_label1 = ttk.Label(self, border='0', image=self.image, textvariable=output_timestr,
-                                  font=tfont,  compound='center')
+                                  font=tfont,  compound='center', foreground='#287CA9')
         output_label1.pack(ipadx='5', side='top')
         self.pack()
         self.after(500, self.update_time_frame)
