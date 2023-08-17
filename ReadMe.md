@@ -19,7 +19,7 @@ This app helps you get the time of any country in the world.
 
 ## Future Features
 
-- Flag for every country.
+- Country Flags.
 - Time zone mark.
 - Map Feature.
 
