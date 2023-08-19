@@ -51,26 +51,40 @@ class App(ttk.Window):
 class Info_window(ttk.Toplevel):
     def __init__(self):
         super().__init__()
+        msize = [365, 450]
         self.geometry("%dx%d+%d+%d" %
-                      (365, 450, screen_math_w + 150, screen_math_h + 40))
+                      (msize[0], msize[1], screen_math_w + 150, screen_math_h + 40))
         self.title("Info")
-        self.maxsize(365, 450)
+        self.maxsize(msize[0], msize[1])
         icon = get_styleimg('GUI/lightmode/infolight.png', 256, 256)
         self.wm_iconphoto(False, icon)
 
-        scrollbar_frame = ScrollbarFrame(self)
+        # grid config
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
+
+        # scrollbar frame
+        scrollbar_frame = ScrollbarFrame(self)
         scrollbar_frame.grid(row=0, column=0, sticky='nsew')
 
+        # heml frame
         html_frame = scrollbar_frame.scrolled_frame
         html_window = HTMLText(
             html_frame, html=RenderHTML('GUI/info.html'), width=57)
         html_window.grid()
         html_window.fit_height()
 
+        # disable info button
+        info_window_btn.config(state='disable')
+        self.protocol("WM_DELETE_WINDOW", self.btn_state)
+
+    def btn_state(self):
+        self.destroy()
+        info_window_btn.config(state='normal')
 
 # scrollbar layout to the right
+
+
 class ScrollbarFrame(tk.Frame):
     def __init__(self, parent, **kwargs):
         tk.Frame.__init__(self, parent, **kwargs)
@@ -107,7 +121,7 @@ all_zone = ct.zone_dict()
 TXT_T = 'This is the current time in:'
 backup_country = {}
 
-# fix country input to title case
+# convert user input to title case
 
 
 def country_title_c():
@@ -151,7 +165,7 @@ def upd_localtime():
     output_local_time_str.set(current_day)
     return current_day
 
-# set default time
+# on start display a random country or time zone
 
 
 def default_time():
@@ -190,6 +204,28 @@ def get_styleimg(img: str, wdth: int, hght: int):
     image = image.resize((wdth, hght))
     image = ImageTk.PhotoImage(image)
     return image
+
+# select light mode or dark mode
+
+
+def change_theme():
+    App.style = ttk.Style()
+    current_theme = App.style.theme_use()
+    global output_label1
+    tips_txt = ['Select Light Mode', 'Select Dark Mode']
+    fg = ['#ffffff', '#287CA9']
+    if current_theme != 'darkly':
+        current_theme = 'darkly'
+        tool_tip.text = tips_txt[0]
+        output_label1.config(foreground=fg[0])
+        setup_theme(False)
+    else:
+        current_theme = 'cerculean'
+        tool_tip.text = tips_txt[1]
+        output_label1.config(foreground=fg[1])
+        setup_theme(True)
+
+    App.style.theme_use(current_theme)
 
 # setup theme images
 
@@ -246,12 +282,12 @@ class Title_frame(ttk.Frame):
 
         # change theme button
         change_theme_btn = ttk.Button(
-            self, image=self.theme_image, command=lambda: self.change_theme(), bootstyle='info_link', cursor='hand2')
+            self, image=self.theme_image, command=lambda: change_theme(), bootstyle='info_link', cursor='hand2')
         change_theme_btn.grid(column=0, row=0, padx=15)
 
         # about window button
         info_window_btn = ttk.Button(
-            self, image=self.info_image, command=lambda: Info_window(), bootstyle='info_link', cursor='hand2')
+            self, image=self.info_image, state='normal', command=lambda: Info_window(), bootstyle='info_link', cursor='hand2')
         info_window_btn.grid(column=2, row=0, padx=15)
 
         # tool tips
@@ -261,25 +297,7 @@ class Title_frame(ttk.Frame):
 
         self.pack(fill='x', pady=5)
 
-        # change theme
-    def change_theme(self):
-        App.style = ttk.Style()
-        current_theme = App.style.theme_use()
-        global output_label1
-        tips_txt = ['Select Light Mode', 'Select Dark Mode']
-        fg = ['#ffffff', '#287CA9']
-        if current_theme != 'darkly':
-            current_theme = 'darkly'
-            tool_tip.text = tips_txt[0]
-            output_label1.config(foreground=fg[0])
-            setup_theme(False)
-        else:
-            current_theme = 'cerculean'
-            tool_tip.text = tips_txt[1]
-            output_label1.config(foreground=fg[1])
-            setup_theme(True)
-
-        App.style.theme_use(current_theme)
+# input frame to type the conutry or time zone
 
 
 class Input_aframe(ttk.Frame):
@@ -295,14 +313,17 @@ class Input_aframe(ttk.Frame):
             self, textvariable=entry_str, completevalues=complete_zone, font='Calibri 10 bold')
         input_entry.bind('<Return>', lambda event: get_time())
         input_button = ttk.Button(self, text='Get Time', command=get_time)
+        # error frame
         errorframe = ttk.Frame(self, width=30, height=19)
         error_lable = ttk.Label(
             errorframe, text='Type the correct timezone or country', font='Calibri 10 bold', foreground='red')
         errorframe.pack()
+
         input_entry.pack(padx=5, side='left')
         input_button.pack(padx=5, side='left')
 
 # local time middle frame
+# display the current local time
 
 
 class Local_time(ttk.Frame):
